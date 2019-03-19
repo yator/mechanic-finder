@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "709994342408",
+    "firebase_url": "https://findermechanic.firebaseio.com",
+    "project_id": "findermechanic",
+    "storage_bucket": "findermechanic.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:709994342408:android:5df91dff6ab79bd7",
+        "android_client_info": {
+          "package_name": "com.example.abelo.findermechanic"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "709994342408-2lco10ll1a2mbim9678cfc8fin4jtp5a.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.abelo.findermechanic",
+            "certificate_hash": "e0b082bea3edbd6f1d33c785267d16483c50e369"
+          }
+        },
+        {
+          "client_id": "709994342408-mf9o11obid9d7ja47jubvtso0r2ujgbl.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB2fqAWAuhEM4joZhuKFXNeucuSk9s9POA"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "709994342408-mf9o11obid9d7ja47jubvtso0r2ujgbl.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

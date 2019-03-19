@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">FinderMechanic</string>
+    <string name="title_activity_customer_map">Map</string>
+    <string name="title_activity_mechanic_maps">Map</string>
+</resources>
