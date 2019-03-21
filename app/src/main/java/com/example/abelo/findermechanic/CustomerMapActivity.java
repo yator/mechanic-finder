@@ -139,7 +139,7 @@ public class CustomerMapActivity extends FragmentActivity implements OnMapReadyC
     GeoQuery geoQuery;
 
     private void getClosestMechanic() {
-        DatabaseReference MechanicLocation = FirebaseDatabase.getInstance().getReference().child("MechanicAvailable");
+        DatabaseReference MechanicLocation = FirebaseDatabase.getInstance().getReference().child("mechanicsAvailable");
         GeoFire geoFire = new GeoFire(MechanicLocation);
         geoQuery = geoFire.queryAtLocation(new GeoLocation(repairLocation.latitude, repairLocation.longitude), radius);
         geoQuery.removeAllListeners();
@@ -148,21 +148,40 @@ public class CustomerMapActivity extends FragmentActivity implements OnMapReadyC
             @Override
             public void onKeyEntered(String key, GeoLocation location) {
                 if (!mechanicFound && requestBol) {
-                    mechanicFound = true;
-                    mechanicFoundID = key;
+                    DatabaseReference mCustomerDatabase = FirebaseDatabase.getInstance().getReference().child("Users").child("Mechanics").child(key);
+                    mCustomerDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
+                                                                         @Override
+                                                                         public void onDataChange(DataSnapshot dataSnapshot) {
+                                                                             if (dataSnapshot.exists() && dataSnapshot.getChildrenCount() > 0) {
+                                                                                 Map<String, Object> mechanicMap = (Map<String, Object>) dataSnapshot.getValue();
+                                                                                 if (mechanicFound) {
+                                                                                     return;
+                                                                                 }
+                                                                                 mechanicFound = true;
+                                                                                 mechanicFoundID = dataSnapshot.getKey();
 
-                    DatabaseReference mechanicRef = FirebaseDatabase.getInstance().getReference().child("Users").child("Mechanics").child("mechanicFoundID");
-                    String customerId = FirebaseAuth.getInstance().getCurrentUser().getUid();
-                    HashMap map = new HashMap();
-                    map.put("customerRepairId", customerId);
-                    mechanicRef.updateChildren(map);
+                                                                                 DatabaseReference mechanicRef = FirebaseDatabase.getInstance().getReference().child("Users").child("Mechanics").child(mechanicFoundID).child("customerRequest");
+                                                                                 String customerId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+                                                                                 HashMap map = new HashMap();
+                                                                                 map.put("customerRepairId", customerId);
+                                                                                 mechanicRef.updateChildren(map);
 
-                    getMechanicLocation();
-                    getMechanicInfo();
-                    mRequest.setText("looking for Mechanic Location......");
+                                                                                 getMechanicLocation();
+                                                                                 getMechanicInfo();
+                                                                                 mRequest.setText("looking for Mechanic Location......");
 
+                                                                             }
+
+                                                                         }
+
+                                                                         @Override
+                                                                         public void onCancelled(DatabaseError databaseError) {
+
+                                                                         }
+
+                                                                     }
+                    );
                 }
-
             }
 
             @Override
@@ -205,16 +224,15 @@ public class CustomerMapActivity extends FragmentActivity implements OnMapReadyC
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists() && requestBol) {
                     List<Object> map = (List<Object>) dataSnapshot.getValue();
-                    double locationlat = 0;
-                    double locationlng = 0;
-                    mRequest.setText("Mechanic found");
+                    double locationLat = 0;
+                    double locationLng = 0;
                     if (map.get(0) != null) {
-                        locationlat = Double.parseDouble(map.get(0).toString());
+                        locationLat = Double.parseDouble(map.get(0).toString());
                     }
                     if (map.get(1) != null) {
-                        locationlng = Double.parseDouble(map.get(1).toString());
+                        locationLng = Double.parseDouble(map.get(1).toString());
                     }
-                    LatLng mechanicLatLng = new LatLng(locationlat, locationlng);
+                    LatLng mechanicLatLng = new LatLng(locationLat, locationLng);
                     if (mMechanicMarker != null) {
                         mMechanicMarker.remove();
                     }
@@ -227,16 +245,15 @@ public class CustomerMapActivity extends FragmentActivity implements OnMapReadyC
                     loc2.setLongitude(mechanicLatLng.longitude);
 
                     float distance = loc1.distanceTo(loc2);
+
                     if (distance < 100) {
                         mRequest.setText("Mechanic is here");
                     } else {
-                        mRequest.setText("Mechanic found" + String.valueOf(distance));
-
-
+                        mRequest.setText("Mechanic found: " + String.valueOf(distance));
                     }
 
 
-                    mMechanicMarker = mMap.addMarker(new MarkerOptions().position(mechanicLatLng).title("your mechanic").icon(BitmapDescriptorFactory.fromResource(R.mipmap.mec2)));
+                    mMechanicMarker = mMap.addMarker(new MarkerOptions().position(mechanicLatLng).title("your Mechanic").icon(BitmapDescriptorFactory.fromResource(R.mipmap.cu)));
                 }
 
             }
@@ -254,32 +271,28 @@ public class CustomerMapActivity extends FragmentActivity implements OnMapReadyC
         mMechanicInfo.setVisibility(View.VISIBLE);
         DatabaseReference mCustomerDatabase = FirebaseDatabase.getInstance().getReference().child("Users").child("Mechanics").child(mechanicFoundID);
         mCustomerDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
+
+
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                if (dataSnapshot.exists() && dataSnapshot.getChildrenCount() > 0) ;
+                if (dataSnapshot.exists() && dataSnapshot.getChildrenCount() > 0) {
+                    if (dataSnapshot.child("name") != null) {
+                        mMechanicName.setText(dataSnapshot.child("name").getValue().toString());
+                    }
+                    if (dataSnapshot.child("phone") != null) {
+                        mMechanicPhone.setText(dataSnapshot.child("phone").getValue().toString());
+                    }
+                    if (dataSnapshot.child("IDno") != null) {
+                        mMechanicIdNO.setText(dataSnapshot.child("IDno").getValue().toString());
+                    }
 
-                Map<String, Object> map = (Map<String, Object>) dataSnapshot.getValue();
-                if (map.get("name") != null) {
-                    mMechanicName.setText(map.get("name").toString());
-
+                    if (dataSnapshot.child("specialisation") != null) {
+                        mMechanicSpecialisation.setText(dataSnapshot.child("specialisation").getValue().toString());
+                    }
+                    if (dataSnapshot.child("profileImageUrl").getValue() != null) {
+                        Glide.with(getApplication()).load(dataSnapshot.child("profileImageUrl").getValue().toString()).into(mMechanicProfileImage);
+                    }
                 }
-                if (map.get("phone") != null) {
-                    mMechanicPhone.setText(map.get("phone").toString());
-                }
-
-                if (map.get("IDno") != null) {
-                    mMechanicIdNO.setText(map.get("IDno").toString());
-                }
-
-                if (map.get("specialisation") != null) {
-                    mMechanicSpecialisation.setText(map.get("specialisation").toString());
-                }
-
-
-                if (map.get("profileImageUrl") != null) {
-                    Glide.with(getApplication()).load(map.get("ProfileImageUrl").toString()).into(mMechanicProfileImage);
-                }
-
             }
 
             @Override

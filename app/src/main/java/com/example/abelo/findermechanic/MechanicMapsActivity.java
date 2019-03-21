@@ -154,18 +154,18 @@ public class MechanicMapsActivity extends FragmentActivity implements OnMapReady
         assignedCustomerRepairLocationRefListener = assignedCustomerRepairLocationRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                if (dataSnapshot.exists()) {
-
+                if (dataSnapshot.exists() && !customerId.equals("")) {
                     List<Object> map = (List<Object>) dataSnapshot.getValue();
-                    double locationlat = 0;
-                    double locationlng = 0;
+                    double locationLat = 0;
+                    double locationLng = 0;
                     if (map.get(0) != null) {
-                        locationlat = Double.parseDouble(map.get(0).toString());
+                        locationLat = Double.parseDouble(map.get(0).toString());
                     }
                     if (map.get(1) != null) {
-                        locationlng = Double.parseDouble(map.get(1).toString());
+                        locationLng = Double.parseDouble(map.get(1).toString());
                     }
-                    LatLng mechanicLatLng = new LatLng(locationlat, locationlng);
+
+                    LatLng mechanicLatLng = new LatLng(locationLat, locationLng);
                     RepairMarker = mMap.addMarker(new MarkerOptions().position(mechanicLatLng).title("Repair Location").icon(BitmapDescriptorFactory.fromResource(R.mipmap.cu)));
 
                     getAssignedCustomerRepairLocation();
@@ -293,7 +293,7 @@ public class MechanicMapsActivity extends FragmentActivity implements OnMapReady
 
     private void disconnectMechanic() {
         String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("mechanicAvailable");
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("mechanicsAvailable");
 
         GeoFire geoFire = new GeoFire(ref);
         geoFire.removeLocation(userId);
