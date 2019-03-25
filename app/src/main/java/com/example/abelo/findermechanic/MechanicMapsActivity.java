@@ -211,7 +211,7 @@ public class MechanicMapsActivity extends FragmentActivity implements OnMapReady
 
 
                 if (map.get("profileImageUrl") != null) {
-                    Glide.with(getApplication()).load(map.get("ProfileImageUrl").toString()).into(mCustomerProfileImage);
+                    Glide.with(getApplication()).load(dataSnapshot.child("profileImageUrl").getValue().toString()).into(mCustomerProfileImage);
                 }
 
             }
