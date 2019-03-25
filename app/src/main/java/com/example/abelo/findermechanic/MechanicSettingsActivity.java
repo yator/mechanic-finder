@@ -81,17 +81,17 @@ public class MechanicSettingsActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 saveUserInformation();
-                Intent intent = new Intent(MechanicSettingsActivity.this, MechanicMapsActivity.class);
-                startActivity(intent);
-                finish();
+//                Intent intent = new Intent(MechanicSettingsActivity.this, MechanicMapsActivity.class);
+//                startActivity(intent);
+
             }
         });
 
         mBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MechanicSettingsActivity.this, MechanicMapsActivity.class);
-                startActivity(intent);
+//                Intent intent = new Intent(MechanicSettingsActivity.this, MechanicMapsActivity.class);
+//                startActivity(intent);
 
                 finish();
                 return;
