@@ -18,6 +18,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
+import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -44,7 +47,10 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.GenericTypeIndicator;
 import com.google.firebase.database.ValueEventListener;
+
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -56,13 +62,16 @@ public class CustomerMapActivity extends FragmentActivity implements OnMapReadyC
     private FusedLocationProviderClient mFusedLocationClient;
     private Button mLogout, mRequest, mSettings;
     private LatLng repairLocation;
+    private RatingBar mRatingBar;
+    private String requestService;
     private SupportMapFragment mapFragment;
     private boolean requestBol = false;
     private LinearLayout mMechanicInfo;
+    private RadioGroup mRadioGroup;
 
     private ImageView mMechanicProfileImage;
 
-    private TextView mMechanicName, mMechanicPhone, mMechanicIdNO, mMechanicSpecialisation;
+    private TextView mMechanicName, mMechanicPhone, mMechanicIdNO;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,7 +92,12 @@ public class CustomerMapActivity extends FragmentActivity implements OnMapReadyC
         mMechanicPhone = (TextView) findViewById(R.id.mechanicPhone);
         mMechanicIdNO = (TextView) findViewById(R.id.mechanicIdNo);
 
-        mMechanicSpecialisation = (TextView) findViewById(R.id.mechanicSpecialisation);
+
+        mRadioGroup=(RadioGroup) findViewById(R.id.radioGroup);
+        mRadioGroup.check(R.id.breaks);
+
+
+        mRatingBar = (RatingBar) findViewById(R.id.ratingBar);
 
 
         mLogout = (Button) findViewById(R.id.logout);
@@ -112,6 +126,15 @@ public class CustomerMapActivity extends FragmentActivity implements OnMapReadyC
 
 
                 } else {
+                    int selectId = mRadioGroup.getCheckedRadioButtonId();
+
+                    final RadioButton radioButton = (RadioButton) findViewById(selectId);
+
+                    if (radioButton.getText() == null){
+                        return;
+                    }
+                    requestService = radioButton.getText().toString();
+
                     requestBol = true;
 
                     String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
@@ -163,6 +186,7 @@ public class CustomerMapActivity extends FragmentActivity implements OnMapReadyC
                                                                                  if (mechanicFound) {
                                                                                      return;
                                                                                  }
+                                                                                 if(mechanicMap.get("specialisation").equals(requestService))
                                                                                  mechanicFound = true;
                                                                                  mechanicFoundID = dataSnapshot.getKey();
 
@@ -229,9 +253,12 @@ public class CustomerMapActivity extends FragmentActivity implements OnMapReadyC
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists() && requestBol) {
+
                     List<Object> map = (List<Object>) dataSnapshot.getValue();
                     double locationLat = 0;
                     double locationLng = 0;
+
+
                     if (map.get(0) != null) {
                         locationLat = Double.parseDouble(map.get(0).toString());
                     }
@@ -260,8 +287,10 @@ public class CustomerMapActivity extends FragmentActivity implements OnMapReadyC
 
 
                     mMechanicMarker = mMap.addMarker(new MarkerOptions().position(mechanicLatLng).title("your Mechanic").icon(BitmapDescriptorFactory.fromResource(R.mipmap.mec2)));
-                }
 
+
+                }
+//                displayCustomerRelatedObjects();
             }
 
             @Override
@@ -271,6 +300,20 @@ public class CustomerMapActivity extends FragmentActivity implements OnMapReadyC
         });
 
     }
+//    private String mechanicId="";
+//    private void displayCustomerRelatedObjects() {
+//        mRatingBar.setVisibility(View.VISIBLE);
+//        mRatingBar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
+//            @Override
+//            public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
+//                mechanicLocationRef.child("rating").setValue(rating);
+//
+//                DatabaseReference mMechanicRatingDb=FirebaseDatabase.getInstance().getReference().child("Users").child("Mechanics").child(mechanicFoundID).child("rating");
+//                mMechanicRatingDb.child(mechanicId).setValue(rating);
+//
+//            }
+//        });
+//    }
 
 
     private void getMechanicInfo() {
@@ -290,14 +333,14 @@ public class CustomerMapActivity extends FragmentActivity implements OnMapReadyC
                     }
                     if (dataSnapshot.child("IDno") != null) {
                         mMechanicIdNO.setText(dataSnapshot.child("IDno").getValue().toString());
-                    }
 
-                    if (dataSnapshot.child("specialisation") != null) {
-                        mMechanicSpecialisation.setText(dataSnapshot.child("specialisation").getValue().toString());
                     }
                     if (dataSnapshot.child("profileImageUrl").getValue() != null) {
                         Glide.with(getApplication()).load(dataSnapshot.child("profileImageUrl").getValue().toString()).into(mMechanicProfileImage);
+
+
                     }
+
                 }
             }
 
@@ -307,6 +350,8 @@ public class CustomerMapActivity extends FragmentActivity implements OnMapReadyC
             }
         });
     }
+
+
 
 
     @Override

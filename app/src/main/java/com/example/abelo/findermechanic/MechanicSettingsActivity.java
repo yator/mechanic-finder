@@ -13,6 +13,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 
 import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -46,6 +48,7 @@ public class MechanicSettingsActivity extends AppCompatActivity {
     private String mSpecialisation;
     private String mProfileImageUrl;
     private Uri resultUri;
+    private RadioGroup mRadioGroup;
 
 
     @Override
@@ -56,9 +59,11 @@ public class MechanicSettingsActivity extends AppCompatActivity {
         mNameField = (EditText) findViewById(R.id.name);
         mPhoneField = (EditText) findViewById(R.id.phone);
         mIdnoField = (EditText) findViewById(R.id.idno);
-        mSpecialisationField = (EditText) findViewById(R.id.specialisation);
+
 
         mProfileImage = (ImageView) findViewById(R.id.profileImage);
+        mRadioGroup=(RadioGroup) findViewById(R.id.radioGroup);
+
         mConfirm = (Button) findViewById(R.id.confirm);
         mBack = (Button) findViewById(R.id.back);
 
@@ -119,7 +124,20 @@ public class MechanicSettingsActivity extends AppCompatActivity {
                     }
                     if (map.get("specialisation") != null) {
                         mSpecialisation = map.get("specialisation").toString();
-                        mSpecialisationField.setText(mSpecialisation);
+                        switch (mSpecialisation){
+                            case"Breaks":
+                                mRadioGroup.check(R.id.breaks);
+                                break;
+                            case"Engine":
+                                mRadioGroup.check(R.id.engine);
+                                break;
+                            case"Wheels":
+                                mRadioGroup.check(R.id.wheels);
+                                break;
+                            case"General":
+                                mRadioGroup.check(R.id.general);
+                                break;
+                        }
                     }
                     if (map.get("profileImageUrl") != null) {
                         mProfileImageUrl = map.get("profileImageUrl").toString();
@@ -140,7 +158,15 @@ public class MechanicSettingsActivity extends AppCompatActivity {
         mName = mNameField.getText().toString();
         mPhone = mPhoneField.getText().toString();
         mIdno = mIdnoField.getText().toString();
-        mSpecialisation = mSpecialisationField.getText().toString();
+
+        int selectId = mRadioGroup.getCheckedRadioButtonId();
+
+        final RadioButton radioButton = (RadioButton) findViewById(selectId);
+
+        if (radioButton.getText() == null){
+            return;
+        }
+        mSpecialisation = radioButton.getText().toString();
 
         Map<String, Object> userInfo = new HashMap<>();
         userInfo.put("name", mName);

@@ -6,7 +6,8 @@
     android:layout_height="match_parent"
     tools:context=".CustomerSettingsActivity"
     android:orientation="vertical"
-    android:padding="20sp">
+    android:padding="20sp"
+    >
 
     <ImageView
         android:layout_width="100sp"

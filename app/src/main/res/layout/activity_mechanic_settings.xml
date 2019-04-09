@@ -41,14 +41,34 @@
         android:hint="National ID"
         android:layout_marginBottom="20sp"
         android:inputType="number" />
-
-    <EditText
-        android:layout_width="match_parent"
+<RadioGroup
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/radioGroup"
+    android:orientation="horizontal">
+    <RadioButton
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/specialisation"
-        android:background="@null"
-        android:hint="Specialisation"
-        android:layout_marginBottom="20sp" />
+        android:text="Breaks"
+        android:id="@+id/breaks"/>
+    <RadioButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Engine"
+        android:id="@+id/engine"/>
+    <RadioButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Wheels"
+        android:id="@+id/wheels"/>
+    <RadioButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Genaral"
+        android:id="@+id/general"/>
+    
+</RadioGroup>
+ 
 
     <Button
         android:layout_width="match_parent"
