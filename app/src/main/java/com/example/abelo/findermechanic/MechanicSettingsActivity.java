@@ -15,6 +15,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -86,6 +87,7 @@ public class MechanicSettingsActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 saveUserInformation();
+                Toast.makeText(MechanicSettingsActivity.this,"information saved successfully",Toast.LENGTH_SHORT).show();
 //                Intent intent = new Intent(MechanicSettingsActivity.this, MechanicMapsActivity.class);
 //                startActivity(intent);
 
@@ -215,6 +217,7 @@ public class MechanicSettingsActivity extends AppCompatActivity {
             });
 
         } else {
+            Toast.makeText(MechanicSettingsActivity.this,"information saved successfully",Toast.LENGTH_SHORT).show();
 
             finish();
 

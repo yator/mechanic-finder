@@ -10,7 +10,7 @@
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Email"
+        android:hint="email"
         android:id="@+id/email" />
 
     <EditText
@@ -26,10 +26,12 @@
         android:text="Login"
         android:id="@+id/login" />
 
-    <Button
-        android:layout_width="match_parent"
+    <TextView
+        android:layout_gravity="center"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Registration"
+        android:text="new mechanic?click here to Register "
+
         android:id="@+id/registration" />
 
 </LinearLayout>

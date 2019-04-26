@@ -13,6 +13,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -75,7 +76,9 @@ public class CustomerSettingsActivity extends AppCompatActivity {
         mConfirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 saveUserInformation();
+                Toast.makeText(CustomerSettingsActivity.this,"information saved successfully",Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -166,7 +169,9 @@ public class CustomerSettingsActivity extends AppCompatActivity {
                 }
             });
 
+
         } else {
+            Toast.makeText(CustomerSettingsActivity.this,"information saved successfully",Toast.LENGTH_SHORT).show();
 
             finish();
 

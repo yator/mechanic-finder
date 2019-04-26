@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".CustomerSettingsActivity"
+    tools:context=".MechanicSettingsActivity"
     android:orientation="vertical"
     android:padding="20sp">
 
@@ -64,7 +64,7 @@
     <RadioButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Genaral"
+        android:text="General"
         android:id="@+id/general"/>
     
 </RadioGroup>

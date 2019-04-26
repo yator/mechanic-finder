@@ -52,6 +52,8 @@
             android:label="@string/title_activity_mechanic_maps" />
         <activity android:name=".CustomerSettingsActivity" />
         <activity android:name=".MechanicSettingsActivity" />
+        <activity android:name=".CustomerRegisterActivity" />
+        <activity android:name=".MechanicRegisterActivity"></activity>
     </application>
 
 </manifest>

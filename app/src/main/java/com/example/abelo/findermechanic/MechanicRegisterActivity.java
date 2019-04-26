@@ -8,7 +8,6 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -19,18 +18,17 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-public class MechanicLoginActivity extends AppCompatActivity {
+public class MechanicRegisterActivity extends AppCompatActivity {
     private EditText mEmail, mPassword;
-    private Button mLogin;
-    private TextView mRegistration;
+    private Button mRegistration;
 
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener firebaseAuthListener;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_mechanic_login);
+        setContentView(R.layout.activity_mechanic_register);
+
 
         mAuth = FirebaseAuth.getInstance();
         firebaseAuthListener = new FirebaseAuth.AuthStateListener() {
@@ -39,29 +37,20 @@ public class MechanicLoginActivity extends AppCompatActivity {
 
                 FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
                 if (user != null) {
-                    Intent intent = new Intent(MechanicLoginActivity.this, MechanicMapsActivity.class);
+                    Intent intent = new Intent(MechanicRegisterActivity.this, MechanicLoginActivity.class);
                     startActivity(intent);
                     finish();
                     return;
                 }
             }
         };
+
         mEmail = (EditText) findViewById(R.id.email);
         mPassword = (EditText) findViewById(R.id.password);
-        mLogin = (Button) findViewById(R.id.login);
-        mRegistration = (TextView) findViewById(R.id.registration);
+        mRegistration = (Button) findViewById(R.id.registration);
+
 
         mRegistration.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent=new Intent(MechanicLoginActivity.this,MechanicRegisterActivity.class);
-                startActivity(intent);
-                finish();
-                return;
-            }
-        });
-
-        mLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 final String email = mEmail.getText().toString();
@@ -70,22 +59,29 @@ public class MechanicLoginActivity extends AppCompatActivity {
                     mEmail.setError("enter valid email");
                     return ;
                 }
-                mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(MechanicLoginActivity.this, new OnCompleteListener<AuthResult>() {
+
+                if (TextUtils.isEmpty(password)) {
+                    mPassword.setError("enter valid password");
+                    return ;
+                }
+                mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(MechanicRegisterActivity.this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (!task.isSuccessful()) {
-                            Toast.makeText(MechanicLoginActivity.this, "login error", Toast.LENGTH_SHORT).show();
-                        }else {
-                            Toast.makeText(MechanicLoginActivity.this, "login successful", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(MechanicRegisterActivity.this, "sign-up error", Toast.LENGTH_SHORT).show();
+                        }if (task.isSuccessful()){
+                            Toast.makeText(MechanicRegisterActivity.this, "sign-up successful", Toast.LENGTH_SHORT).show();
+                            String user_id = mAuth.getCurrentUser().getUid();
+                            DatabaseReference current_user_db = FirebaseDatabase.getInstance().getReference().child("Users").child("Mechanics").child(user_id);
+                            current_user_db.setValue(true);
+
                         }
 
 
                     }
                 });
-
             }
         });
-
 
     }
 
