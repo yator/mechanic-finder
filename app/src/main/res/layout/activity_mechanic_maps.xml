@@ -23,6 +23,7 @@
 
             <Button
                 android:layout_weight="1"
+                android:textColor="@color/colorAccent"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/logout"
@@ -30,11 +31,12 @@
 
             <Button
                 android:layout_weight="1"
+                android:textColor="@color/colorPrimary"
                 android:layout_gravity="end"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/settings"
-                android:text="Settings" />
+                android:text="Profile" />
         </LinearLayout>
 
         <Switch

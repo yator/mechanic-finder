@@ -74,7 +74,7 @@ public class MechanicLoginActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (!task.isSuccessful()) {
-                            Toast.makeText(MechanicLoginActivity.this, "login error", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(MechanicLoginActivity.this, "user email and password does not exist", Toast.LENGTH_SHORT).show();
                         }else {
                             Toast.makeText(MechanicLoginActivity.this, "login successful", Toast.LENGTH_SHORT).show();
                         }

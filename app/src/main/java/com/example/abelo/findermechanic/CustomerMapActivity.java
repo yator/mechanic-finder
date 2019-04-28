@@ -109,7 +109,6 @@ public class CustomerMapActivity extends FragmentActivity implements OnMapReadyC
             @Override
             public void onClick(View v) {
                 FirebaseAuth.getInstance().signOut();
-                DatabaseReference.goOffline();
                 Intent intent = new Intent(CustomerMapActivity.this, MainActivity.class);
                 startActivity(intent);
                 finishAffinity();

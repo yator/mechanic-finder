@@ -69,7 +69,7 @@ public class CustomerRegisterActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (!task.isSuccessful()) {
-                            Toast.makeText(CustomerRegisterActivity.this, "sign-up error", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(CustomerRegisterActivity.this, "email and password exists", Toast.LENGTH_SHORT).show();
                         }if (task.isSuccessful()){
                             Toast.makeText(CustomerRegisterActivity.this, "sign-up successful", Toast.LENGTH_SHORT).show();
                             String user_id = mAuth.getCurrentUser().getUid();

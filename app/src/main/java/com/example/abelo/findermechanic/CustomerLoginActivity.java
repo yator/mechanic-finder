@@ -75,10 +75,10 @@ public class CustomerLoginActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (!task.isSuccessful()) {
-                            Toast.makeText(CustomerLoginActivity.this, "login error", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(CustomerLoginActivity.this, "user email and password does not exist", Toast.LENGTH_SHORT).show();
                         }else {
                             Toast.makeText(CustomerLoginActivity.this, "login successful", Toast.LENGTH_SHORT).show();
-                        } 
+                        }
 
 
                     }
@@ -98,6 +98,7 @@ public class CustomerLoginActivity extends AppCompatActivity {
 
     @Override
     protected void onStop() {
+
         super.onStop();
         mAuth.removeAuthStateListener(firebaseAuthListener);
     }
